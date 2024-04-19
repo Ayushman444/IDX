@@ -5,32 +5,41 @@ const authRoutes = require('./routes/Auth');
 const dbconnect = require('./config/database');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const socketLogic = require("./Socket/Socket.js"); // Import socketLogic instead of { app, server }
 
 dotenv.config();
 
-const app = express();
-
 const PORT = process.env.PORT || 4000;
 
-app.use(cors({ origin: 'http://localhost:3000' }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+const main = async () => {
+    const app = express();
 
+    // Middleware
+    app.use(cors({ origin: 'http://localhost:3000' }));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
 
-app.use("/api/auth", authRoutes);
+    // Routes
+    app.use("/api/auth", authRoutes);
 
+    // Serving static files
+    app.use(express.static(path.join(__dirname, "frontend", "build")));
 
-app.use(express.static(path.join(__dirname, "frontend", "build")));
+    // Serving frontend for all other routes
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+    });
 
+    // Start server
+    socketLogic(app).listen(PORT, async () => { // Use socketLogic and call listen method
+        await dbconnect();
+        console.log(`Server running on port ${PORT}`);
+    });
+};
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+main().catch((err) => {
+    console.error('Error starting server:', err);
+    process.exit(1);
 });
 
-
-// Connecting to the database
-app.listen(PORT, () => {
-    dbconnect();
-    console.log(`Server Running on port ${PORT}`);
-});

@@ -1,39 +1,60 @@
-const { Server } = require("socket.io");
-const http = require("http");
+const { Server } = require('socket.io');
+const http = require('http'); // Import the http module
 
+function getAllConnectedClients(io, roomId, userSocketMap) {
+    return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map((socketId) => {
+        return {
+            socketId,
+            username: userSocketMap[socketId],
+        };
+    });
+}
 
-const server = http.createServer(app);
-const io = new Server(server, {
-	cors: {
-		origin: ["http://localhost:3000"],
-		methods: ["GET", "POST"],
-	},
-});
+const socketLogic = () => {
+    // Create an HTTP server
+    const server = http.createServer();
+    const io = new Server(server);
+    const userSocketMap = {};
 
-export const getReceiverSocketId = (receiverId) => {
-	return userSocketMap[receiverId];
+    io.on('connection', (socket) => {
+        console.log('socket connected', socket.id);
+
+        socket.on('join', ({ roomId, username }) => {
+            userSocketMap[socket.id] = username;
+            socket.join(roomId);
+            const clients = getAllConnectedClients(io, roomId, userSocketMap);
+            clients.forEach(({ socketId }) => {
+                io.to(socketId).emit('joined', {
+                    clients,
+                    username,
+                    socketId: socket.id,
+                });
+            });
+        });
+
+        socket.on('code_change', ({ roomId, code }) => {
+            socket.in(roomId).emit('code_change', { code });
+        });
+
+        socket.on('sync_code', ({ socketId, code }) => {
+            io.to(socketId).emit('code_change', { code });
+        });
+
+        socket.on('disconnecting', () => {
+            const rooms = [...socket.rooms];
+            rooms.forEach((roomId) => {
+                socket.in(roomId).emit('disconnected', {
+                    socketId: socket.id,
+                    username: userSocketMap[socket.id],
+                });
+            });
+            delete userSocketMap[socket.id];
+            socket.leave();
+        });
+    });
+
+    // Return the server instance
+    return server;
 };
 
-const userSocketMap = {}; // user id is key & socket id is value
-
-io.on("connection", (socket) => {
-	console.log("a user connected", socket.id);
-  
-	const userId = socket.handshake.query.userId;
-	if (userId !== undefined) {
-	  userSocketMap[userId] = socket.id; // Store the user ID and socket ID
-	}
-  
-	io.emit("getOnlineUsers", Object.keys(userSocketMap));
-  
-	socket.on("disconnect", () => {
-	  console.log("user disconnected", socket.id);
-	  if (userId !== undefined) {
-		delete userSocketMap[userId]; // Remove the user ID and socket ID mapping on disconnect
-		io.emit("getOnlineUsers", Object.keys(userSocketMap));
-	  }
-	});
-  });
-  
-
-export { io, server ,userSocketMap };
+module.exports = socketLogic;
