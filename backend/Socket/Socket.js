@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const http = require('http'); // Import the http module
 
 function getAllConnectedClients(io, roomId, userSocketMap) {
     return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map((socketId) => {
@@ -9,7 +10,9 @@ function getAllConnectedClients(io, roomId, userSocketMap) {
     });
 }
 
-module.exports = (server) => {
+const socketLogic = () => {
+    // Create an HTTP server
+    const server = http.createServer();
     const io = new Server(server);
     const userSocketMap = {};
 
@@ -49,4 +52,9 @@ module.exports = (server) => {
             socket.leave();
         });
     });
+
+    // Return the server instance
+    return server;
 };
+
+module.exports = socketLogic;

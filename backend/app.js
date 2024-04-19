@@ -5,7 +5,7 @@ const authRoutes = require('./routes/Auth');
 const dbconnect = require('./config/database');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { app, server } = require("./Socket/Socket.js");
+const socketLogic = require("./Socket/Socket.js"); // Import socketLogic instead of { app, server }
 
 dotenv.config();
 
@@ -32,7 +32,7 @@ const main = async () => {
     });
 
     // Start server
-    server.listen(PORT, async () => {
+    socketLogic(app).listen(PORT, async () => { // Use socketLogic and call listen method
         await dbconnect();
         console.log(`Server running on port ${PORT}`);
     });
@@ -43,4 +43,3 @@ main().catch((err) => {
     process.exit(1);
 });
 
-module.exports = app;
