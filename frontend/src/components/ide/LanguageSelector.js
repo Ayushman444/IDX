@@ -12,7 +12,7 @@ import {
   
   const languages = Object.entries(LANGUAGE_VERSIONS);
   const ACTIVE_COLOR = "blue.400";
-export const LanguageSelector = () => {
+export const LanguageSelector = ({ language, onSelect }) => {
   return (
     <Box ml={2} mb={4}>
       <Text mb={2} fontSize="lg">
