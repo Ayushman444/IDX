@@ -34,24 +34,44 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , set
     editor.focus();
   };
 
-  const onSelect = (newLanguage) => {
-    setLanguage(newLanguage);
-    onLanguageChange(newLanguage);
-    setValue(CODE_SNIPPETS[newLanguage]);
-    onCodeChange(CODE_SNIPPETS[newLanguage])
-    if (socket.current) {
-      socket.current.emit('code_change', { roomId, code: CODE_SNIPPETS[newLanguage], language:newLanguage });
-    }
-  };
+  const [codeByLanguage, setCodeByLanguage] = useState({});
 
-  const onChange = (newValue) => {
-    setValue(newValue);
-    onCodeChange(newValue);
-    if (socket.current) {
-      socket.current.emit('code_change', { roomId, code: newValue, language });
-    }
-    localStorage.setItem("code", newValue);
-  };
+const onSelect = (newLanguage) => {
+  // Save the current code before changing languages
+  setCodeByLanguage({
+    ...codeByLanguage,
+    [language]: value,
+  });
+
+  // Load the code for the new language, or default code if none exists
+  const newCode = codeByLanguage[newLanguage] || CODE_SNIPPETS[newLanguage];
+  setValue(newCode);
+  onCodeChange(newCode);
+
+  setLanguage(newLanguage);
+  onLanguageChange(newLanguage);
+
+  if (socket.current) {
+    socket.current.emit('code_change', { roomId, code: newCode, language: newLanguage });
+  }
+};
+
+const onChange = (newValue) => {
+  // Update the code for the current language whenever the code changes
+  setCodeByLanguage({
+    ...codeByLanguage,
+    [language]: newValue,
+  });
+
+  setValue(newValue);
+  onCodeChange(newValue);
+
+  if (socket.current) {
+    socket.current.emit('code_change', { roomId, code: newValue, language });
+  }
+
+  localStorage.setItem("code", newValue);
+};
 
   return (
     <Box>
