@@ -16,6 +16,7 @@ const useLogin = () => {
 			if (!res.ok) {
                 throw new Error(data.error || "Login failed");
             }
+			localStorage.setItem("username", username);
 
 		}catch (error) {
             throw new Error(error.message || "Login failed");
