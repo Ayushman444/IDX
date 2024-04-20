@@ -17,7 +17,7 @@ export const EditorPage = () => {
   const [users, setUsers] = useState([]);
   const { roomId } = useParams();
   const [theme, setTheme] = useState("dark");
-  const Username = localStorage.getItem("username");
+  const username = localStorage.getItem("username");
   const [isAudioPanelOpen, setIsAudioPanelOpen] = useState(false);
   const [isSlidePanelOpen, setIsSlidePanelOpen] = useState(false);
 
@@ -28,7 +28,7 @@ export const EditorPage = () => {
 
       socket.emit("join", {
         roomId,
-        username: "dummyUser",
+        username,
       });
       
       // Sidebar mein dalne hai
@@ -155,20 +155,24 @@ export const EditorPage = () => {
             onChange={handleThemeToggle}
             checked={theme === "light"}
           />
-          <div className="absolute top-2 right-[200px] border border-rounded rounded-lg border-gray-500 p-2">
-            <p className="">Joined as {Username}</p>
+
+          <div className="absolute flex flex-row top-2 right-[300px] ">
+          <div className=" border border-rounded rounded-lg border-gray-500 p-2 mr-4">
+            <p className="text-white">{username}</p>
           </div>
 
           <div>
             <button
-              className="btn btn-accent absolute top-1  right-[300px] m-1"
+              className="btn btn-accent "
               onClick={handleAudioPanelToggle}
             >
               Join Audio
             </button>
           </div>
+          </div>
+          
 
-          <SideBar />
+          <SideBar clients={users}/>
           <Box
             minH="100vh"
             bg={`${theme === "dark" ? "gray.800" : "gray.200"}`}

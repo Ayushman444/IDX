@@ -1,7 +1,7 @@
 import React from 'react'
 import { JoinedUser } from './JoinedUser';
-export const SideBar = () => {
-    const clients = ["Anuj", "Aman" , "Ayushman" , "Pramod"];
+export const SideBar = ({clients}) => {
+    // const clients = ["Anuj", "Aman" , "Ayushman" , "Pramod"];
 
   return (
     <div className='w-[10vw] h-[100vh] border border-rounded rounded-lg bg-blue-200 relative'>
@@ -11,7 +11,7 @@ export const SideBar = () => {
             <h1 className='text-2xl font-bold ml-6'>Users</h1>
             <div className='overflow-y-auto h-[80%]'>
                 {clients.map((client) => (
-                    <JoinedUser key={client} client={client} />
+                    <JoinedUser key={client.socketId} client={client.username} />
                 ))}
             </div>
         </div>

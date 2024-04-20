@@ -17,6 +17,7 @@ const useLogout = () => {
 				throw new Error(data.error);
 			}
 			console.log("Logged out successfully");
+			localStorage.clear();
 			navigate('/');
 		} catch (error) {
 			throw new Error(error);
