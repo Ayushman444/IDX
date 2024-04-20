@@ -15,6 +15,8 @@ export const Client = () => {
             setConnectedUsers(users);
         });
 
+        console.log(connectedUsers);
+
         return () => {
             socket.disconnect();
         };
@@ -26,6 +28,7 @@ export const Client = () => {
             <ul>
                 {connectedUsers.map((user) => (
                     <li key={user.socketId}>{user.username}</li>
+                    
                 ))}
             </ul>
         </div>

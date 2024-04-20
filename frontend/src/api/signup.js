@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const useSignup = () => {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const signup = async ({ username, email, password }) => {
         setLoading(true);
@@ -18,6 +20,7 @@ const useSignup = () => {
                 throw new Error(data.error || "Signup failed");
             }
             console.log(data);
+            navigate('/Home');
             // Handle success
             // toast.success("Signup successful!");
         } catch (error) {

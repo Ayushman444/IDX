@@ -1,4 +1,3 @@
-// EditorPage.jsx
 import React, { useEffect, useRef, useState } from "react";
 import toast from 'react-hot-toast';
 import { Box } from "@chakra-ui/react";
@@ -11,7 +10,7 @@ export const EditorPage = () => {
   const socketRef = useRef(null);
   const codeRef = useRef(null);
   const languageRef = useRef(null);
-  const [clients, setClients] = useState([]);
+  const [users, setUsers] = useState([]);
   const { roomId } = useParams();
 
   useEffect(() => {
@@ -23,13 +22,31 @@ export const EditorPage = () => {
         roomId,
         username: 'dummyUser',
       });
+      
+      // Sidebar mein dalne hai
+      socket.emit('access_change', {
+        roomId,
+        targetSocketId: 'dummyUser',
+        access: 'read',
+      });
 
-      socket.on('joined', ({ clients, username, socketId }) => {
+      socket.on('access_changed', ({roomId, access}) => {
+        console.log("roomid ", roomId);
+        console.log("access ", access);
+      });
+
+      socket.on('access_denied', ({message}) => {
+        console.log("message : ", message);
+      });
+
+      // yaha tak
+
+      socket.on('joined', ({ client, username, socketId }) => {
         if (username !== '') {
           toast.success(`${username} joined the room.`);
           console.log(`${username} joined`);
         }
-        setClients(clients);
+        // setClients(clients);
         socket.emit('sync_code', {
           code: codeRef.current,
           language: languageRef.current,
@@ -37,18 +54,43 @@ export const EditorPage = () => {
         });
       });
 
+      socket.on('update_users', (clients) => {
+        console.log("clients", clients);
+        setUsers(clients);
+        console.log("users", users);
+      });
+
+
       // Listening for disconnected
       socket.on(
         'disconnected',
         ({ socketId, username }) => {
           toast.success(`${username} left the room.`);
-          setClients((prev) => {
+          setUsers((prev) => {
             return prev.filter(
               (client) => client.socketId !== socketId
             );
           });
         }
       );
+
+      // Cursor positions ke liye
+      // editor.on('cursorActivity', () => {
+      //   const cursor = editor.getCursor();
+      //   socket.emit('cursor_position', {
+      //       roomId: currentRoomId,
+      //       cursor,
+      //   });
+      // });
+
+
+      // socket.on('update_cursor', ({ socketId, cursor }) => {
+      //   if (socketId !== socket.id) {
+      //       editors[socketId].setCursor(cursor);
+      //   }
+      // });
+
+
     };
 
 

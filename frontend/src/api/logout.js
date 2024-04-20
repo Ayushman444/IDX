@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 const { useState } = require("react");
 
 const useLogout = () => {
 	const [loading, setLoading] = useState(false);
-
+	const navigate = useNavigate();
 	const logout = async () => {
 		setLoading(true);
 		try {
@@ -14,6 +16,8 @@ const useLogout = () => {
 			if (data.error) {
 				throw new Error(data.error);
 			}
+			console.log("Logged out successfully");
+			navigate('/');
 		} catch (error) {
 			throw new Error(error);
 		} finally {
