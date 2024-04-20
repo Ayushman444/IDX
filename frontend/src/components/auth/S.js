@@ -1,6 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
+import useSignup from '../../api/signup'
+
 export const S = () => {
+    const { loading, signup } = useSignup();
 
     const [formData, setFormData] = useState({
         username: '',
@@ -15,9 +18,19 @@ export const S = () => {
         });
       };
     
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
+        const data = new FormData(e.currentTarget);
+        const username = data.get('username');
+        const email = data.get('email');
+        const password = data.get('password');
+        try {
+              await signup({username, email, password});
+              console.log("Signup successful");
+          } catch (error) {
+              console.error("Signup failed:", error.message);
+          }
       };
   return (
     <div className="container mx-auto max-w-md mt-8">
