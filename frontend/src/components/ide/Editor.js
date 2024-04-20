@@ -35,13 +35,26 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , set
   };
 
   const [codeByLanguage, setCodeByLanguage] = useState({});
+  useEffect(() => {
+    const savedCode = localStorage.getItem('codeByLanguage');
+    if (savedCode) {
+      setCodeByLanguage(JSON.parse(savedCode));
+    }
+  }, []);
+  useEffect(() => {
+    // Save code to localStorage whenever it changes
+    localStorage.setItem('codeByLanguage', JSON.stringify(codeByLanguage));
+  }, [codeByLanguage]);
 
 const onSelect = (newLanguage) => {
   // Save the current code before changing languages
-  setCodeByLanguage({
+  const newCodeByLanguage = {
     ...codeByLanguage,
     [language]: value,
-  });
+  };
+  localStorage.clear();
+  setCodeByLanguage(newCodeByLanguage);
+  localStorage.setItem('codeByLanguage', JSON.stringify(newCodeByLanguage));
 
   // Load the code for the new language, or default code if none exists
   const newCode = codeByLanguage[newLanguage] || CODE_SNIPPETS[newLanguage];
