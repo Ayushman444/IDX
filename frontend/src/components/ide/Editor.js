@@ -10,7 +10,7 @@ import { useRef } from "react";
 // import { CODE_SNIPPETS } from "../../Constants";
 
 
-export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput }) => {
+export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput , setEditor}) => {
   const editorRef = useRef("");
   const inputRef = useRef("");
   const [language, setLanguage] = useState("javascript");
@@ -45,6 +45,18 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , set
     // Save code to localStorage whenever it changes
     localStorage.setItem('codeByLanguage', JSON.stringify(codeByLanguage));
   }, [codeByLanguage]);
+  const onFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      setValue(e.target.result);
+      setEditor(e.target.result);
+      // editorRef = (e.target.result);
+    };
+
+    reader.readAsText(file);
+  };
 
 const onSelect = (newLanguage) => {
   // Save the current code before changing languages
@@ -75,7 +87,7 @@ const onChange = (newValue) => {
     ...codeByLanguage,
     [language]: newValue,
   });
-
+  setEditor(newValue);
   setValue(newValue);
   onCodeChange(newValue);
 
@@ -88,6 +100,7 @@ const onChange = (newValue) => {
 
   return (
     <Box>
+      <input type="file" onChange={onFileUpload} />
       <HStack spacing={4}>
         <Box w="50%" >
           <LanguageSelector language={language} onSelect={onSelect} />
