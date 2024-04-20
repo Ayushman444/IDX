@@ -21,6 +21,7 @@ const useSignup = () => {
             }
             console.log(data);
             navigate('/Home');
+            localStorage.setItem("username", username);
             // Handle success
             // toast.success("Signup successful!");
         } catch (error) {

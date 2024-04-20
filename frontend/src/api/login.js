@@ -19,6 +19,7 @@ const useLogin = () => {
 			if (!res.ok) {
                 throw new Error(data.error || "Login failed");
             }
+			localStorage.setItem("username", username);
 
 			navigate('/Home');
 
