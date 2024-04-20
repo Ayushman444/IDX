@@ -21,7 +21,7 @@ async function executeCode(language, sourceCode, inputContext) {
     method: "POST",
     headers: {
       "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-      "x-rapidapi-key": 'a9a6ea552dmsh8bf0c5a3d2ce44cp148ea4jsnd962f723a0d5',
+      "x-rapidapi-key": '87427de647mshdad9f8abf321096p1d151ejsnd1d20cc3e49a',
       "content-type": "application/json",
     },
     body: JSON.stringify({
@@ -41,7 +41,7 @@ async function executeCode(language, sourceCode, inputContext) {
         method: "GET",
         headers: {
           "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-          "x-rapidapi-key": 'a9a6ea552dmsh8bf0c5a3d2ce44cp148ea4jsnd962f723a0d5',
+          "x-rapidapi-key": '87427de647mshdad9f8abf321096p1d151ejsnd1d20cc3e49a',
           "content-type": "application/json",
         },
       });
@@ -57,7 +57,7 @@ async function executeCode(language, sourceCode, inputContext) {
     method: "GET",
     headers: {
       "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-      "x-rapidapi-key": 'a9a6ea552dmsh8bf0c5a3d2ce44cp148ea4jsnd962f723a0d5',
+      "x-rapidapi-key": '87427de647mshdad9f8abf321096p1d151ejsnd1d20cc3e49a',
       "content-type": "application/json",
     },
   });
