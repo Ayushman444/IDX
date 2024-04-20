@@ -15,7 +15,7 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , set
   const inputRef = useRef("");
   const [language, setLanguage] = useState("javascript");
   const [value, setValue] = useState(CODE_SNIPPETS[language]);
-
+  
   useEffect(() => {
     if (socket.current) {
         socket.current.on('code_change', ({ code,language }) => {
@@ -104,6 +104,7 @@ const onChange = (newValue) => {
       <HStack spacing={2}>
         <Box w="50%" >
           <LanguageSelector language={language} onSelect={onSelect} />
+          
           <Editor
             className="border border-gray-500 rounded-sm"
             options={{

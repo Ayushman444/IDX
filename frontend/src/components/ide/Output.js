@@ -18,8 +18,9 @@ export const Output = ({ editorRef, language , theme }) => {
   const runCode = async () => {
     const sourceCode = editorContext;
     console.log(sourceCode);
-    // console.log(sourceCode.current,"this is source code");  
-    // console.log('def greet(name):\n\tprint("Hello, " + name + "!")\na=input("enter number");\ngreet(a);',"i need this");  
+    
+    console.log(sourceCode.current,"this is source code");  
+    console.log('def greet(name):\n\tprint("Hello, " + name + "!")\na=input("enter number");\ngreet(a);',"i need this");  
 
     if (!sourceCode) return;
     try {
