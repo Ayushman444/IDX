@@ -1,12 +1,13 @@
 // EditorPage.jsx
 import React, { useContext, useEffect, useRef, useState } from "react";
 import toast from 'react-hot-toast';
-import { Box } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import { CodeEditor } from "../components/ide/Editor";
 import { useParams } from 'react-router-dom';
 import { CODE_SNIPPETS } from "../Constants";
 import { initSocket } from "../Socket";
 import { EditorContext, InputContext } from "../context/EditorContext";
+import { SideBar } from "../components/ide/SideBar";
 
 export const EditorPage = () => {
   const socketRef = useRef(null);
@@ -78,11 +79,15 @@ export const EditorPage = () => {
   return (
     <EditorContext.Provider value={editor}>
       <InputContext.Provider value={input}>
-
-      
+    <div className="h-[100vh] w-[100vw] flex flex-row justify-center items-center">
+    <SideBar/>
     <Box minH="100vh" bg="#0f0a19" color="gray.500" px={6} py={8}>
       <CodeEditor roomId={roomId} socket={socketRef} onCodeChange={(code) => { codeRef.current = code; }} onLanguageChange={(language) => { languageRef.current = language; }} setInput = {setInput} setEditor = {setEditor}/>
     </Box>
+      
+    
+    </div>
+      
       </InputContext.Provider>
     </EditorContext.Provider>
   );

@@ -99,9 +99,9 @@ const onChange = (newValue) => {
 };
 
   return (
-    <Box>
+    <Box h="100%" w="100%">
       <input type="file" onChange={onFileUpload} />
-      <HStack spacing={4}>
+      <HStack spacing={2}>
         <Box w="50%" >
           <LanguageSelector language={language} onSelect={onSelect} />
           
@@ -112,6 +112,7 @@ const onChange = (newValue) => {
               },
             }}
             height="75vh"
+            width="45vw"
             theme="vs-dark"
             language={language}
             defaultValue={CODE_SNIPPETS[language]}
