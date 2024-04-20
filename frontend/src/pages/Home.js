@@ -10,6 +10,7 @@ import './Home.css'
 export const Home = () => {
     const navigate = useNavigate();
     const {logout} = useLogout();
+    const Username = localStorage.getItem('username');
 
     const [roomId, setRoomId] = useState('');
     const [username, setUsername] = useState('');
@@ -52,7 +53,7 @@ export const Home = () => {
   return (
     <div className="homePageWrapper relative">
             <div className='absolute text-xl font-bold top-3 right-[44%]'>
-                <h1>Hello Dummy User</h1>
+                <h1>Hello {Username}</h1>
             </div>
             <div className='absolute top-1 right-10' >
                 

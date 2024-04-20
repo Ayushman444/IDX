@@ -15,7 +15,7 @@ export const Landing = () => {
 
     tl.fromTo(
       loginButtonRef.current,
-      { x: "0%", opacity: 0 },
+      { x: "0%", opacity: 1 },
       { duration: 1, x: "0%", opacity: 1, ease: "power4.out" },
       
     )

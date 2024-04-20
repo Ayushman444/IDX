@@ -18,6 +18,7 @@ const useSignup = () => {
                 throw new Error(data.error || "Signup failed");
             }
             console.log(data);
+            localStorage.setItem("username", username);
             // Handle success
             // toast.success("Signup successful!");
         } catch (error) {
