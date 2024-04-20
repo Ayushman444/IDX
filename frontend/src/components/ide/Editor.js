@@ -7,9 +7,10 @@ import { Output } from "./Output";
 import { LanguageSelector } from "./LanguageSelector";
 import { CODE_SNIPPETS } from "../../Constants";
 import { useRef } from "react";
+// import { CODE_SNIPPETS } from "../../Constants";
 
 
-export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput }) => {
+export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput , setEditor}) => {
   const editorRef = useRef("");
   const inputRef = useRef("");
   const [language, setLanguage] = useState("javascript");
@@ -33,27 +34,73 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , set
     editor.focus();
   };
 
-  const onSelect = (newLanguage) => {
-    setLanguage(newLanguage);
-    onLanguageChange(newLanguage);
-    setValue(CODE_SNIPPETS[newLanguage]);
-    onCodeChange(CODE_SNIPPETS[newLanguage])
-    if (socket.current) {
-      socket.current.emit('code_change', { roomId, code: CODE_SNIPPETS[newLanguage], language:newLanguage });
+  const [codeByLanguage, setCodeByLanguage] = useState({});
+  useEffect(() => {
+    const savedCode = localStorage.getItem('codeByLanguage');
+    if (savedCode) {
+      setCodeByLanguage(JSON.parse(savedCode));
     }
+  }, []);
+  useEffect(() => {
+    // Save code to localStorage whenever it changes
+    localStorage.setItem('codeByLanguage', JSON.stringify(codeByLanguage));
+  }, [codeByLanguage]);
+  const onFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      setValue(e.target.result);
+      setEditor(e.target.result);
+      // editorRef = (e.target.result);
+    };
+
+    reader.readAsText(file);
   };
 
-  const onChange = (newValue) => {
-    setValue(newValue);
-    onCodeChange(newValue);
-    if (socket.current) {
-      socket.current.emit('code_change', { roomId, code: newValue, language });
-    }
-    localStorage.setItem("code", newValue);
+const onSelect = (newLanguage) => {
+  // Save the current code before changing languages
+  const newCodeByLanguage = {
+    ...codeByLanguage,
+    [language]: value,
   };
+  localStorage.clear();
+  setCodeByLanguage(newCodeByLanguage);
+  localStorage.setItem('codeByLanguage', JSON.stringify(newCodeByLanguage));
+
+  // Load the code for the new language, or default code if none exists
+  const newCode = codeByLanguage[newLanguage] || CODE_SNIPPETS[newLanguage];
+  setValue(newCode);
+  onCodeChange(newCode);
+
+  setLanguage(newLanguage);
+  onLanguageChange(newLanguage);
+
+  if (socket.current) {
+    socket.current.emit('code_change', { roomId, code: newCode, language: newLanguage });
+  }
+};
+
+const onChange = (newValue) => {
+  // Update the code for the current language whenever the code changes
+  setCodeByLanguage({
+    ...codeByLanguage,
+    [language]: newValue,
+  });
+  setEditor(newValue);
+  setValue(newValue);
+  onCodeChange(newValue);
+
+  if (socket.current) {
+    socket.current.emit('code_change', { roomId, code: newValue, language });
+  }
+
+  localStorage.setItem("code", newValue);
+};
 
   return (
-    <Box h="100%" w = "100%">
+    <Box h="100%" w="100%">
+      <input type="file" onChange={onFileUpload} />
       <HStack spacing={2}>
         <Box w="50%" >
           <LanguageSelector language={language} onSelect={onSelect} />

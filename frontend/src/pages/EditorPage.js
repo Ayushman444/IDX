@@ -68,6 +68,7 @@ export const EditorPage = () => {
   const editorContext  = useContext(EditorContext);
   const inputContext = useContext(InputContext);
   const [input, setInput] = useState("input value");
+  const [editor, setEditor] = useState(codeRef);
 
   useEffect(() => {
     setInput(inputContext);
@@ -76,12 +77,12 @@ export const EditorPage = () => {
   // console.log(codeRef);
 
   return (
-    <EditorContext.Provider value={codeRef}>
+    <EditorContext.Provider value={editor}>
       <InputContext.Provider value={input}>
     <div className="h-[100vh] w-[100vw] flex flex-row justify-center items-center">
     <SideBar/>
     <Box minH="100vh" bg="#0f0a19" color="gray.500" px={6} py={8}>
-      <CodeEditor roomId={roomId} socket={socketRef} onCodeChange={(code) => { codeRef.current = code; }} onLanguageChange={(language) => { languageRef.current = language; }} setInput = {setInput}/>
+      <CodeEditor roomId={roomId} socket={socketRef} onCodeChange={(code) => { codeRef.current = code; }} onLanguageChange={(language) => { languageRef.current = language; }} setInput = {setInput} setEditor = {setEditor}/>
     </Box>
       
     
