@@ -78,6 +78,12 @@ const socketLogic = (app) => {
             }
         });
 
+        socket.on('cursor_position', ({ roomId, cursorPosition ,username}) => {
+            io.to(roomId).emit('cursor_position', { cursorPosition,username });
+            console.log('usrnm',username);
+        console.log('position',cursorPosition)
+        });
+
         socket.on('disconnecting', () => {
             const rooms = [...socket.rooms];
             console.log("socketid mil gayi ", socket.id);

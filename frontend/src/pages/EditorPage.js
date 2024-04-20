@@ -23,7 +23,7 @@ export const EditorPage = () => {
 
   useEffect(() => {
     const initializeSocket = async () => {
-      const socket = await initSocket(); // Initialize socket connection
+      const socket = await initSocket();
       socketRef.current = socket;
 
       socket.emit("join", {
@@ -192,6 +192,7 @@ export const EditorPage = () => {
               setInput={setInput}
               setEditor={setEditor}
               theme={theme}
+              username={username}
             />
           </Box>
           {isAudioPanelOpen && (
