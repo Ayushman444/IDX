@@ -19,18 +19,19 @@ export const Output = ({ editorRef, language , theme }) => {
     const sourceCode = editorContext;
     console.log(sourceCode);
     
-    console.log(sourceCode.current,"this is source code");  
-    console.log('def greet(name):\n\tprint("Hello, " + name + "!")\na=input("enter number");\ngreet(a);',"i need this");  
+    // console.log(sourceCode.current,"this is source code");  
+    // console.log('def greet(name):\n\tprint("Hello, " + name + "!")\na=input("enter number");\ngreet(a);',"i need this");  
 
     if (!sourceCode) return;
     try {
       setIsLoading(true);
-      const output1 = await executeCode(LanguageIds[language], sourceCode.current
+      const output1 = await executeCode(LanguageIds[language], sourceCode
       , inputContext);
       
       setOutput(output1);
       // result.stderr ? setIsError(true) : setIsError(false);
     } catch (error) {
+      // console.log(error);
       // console.log(error);
       toast({
         title: "An error occurred.",
