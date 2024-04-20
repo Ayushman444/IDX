@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
+import useLogin from '../../api/login';
 export const L = () => {
+    const {login } = useLogin();
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -13,10 +15,18 @@ export const L = () => {
         });
       };
     
-      const handleSubmit = (e) => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        // Here you can handle form submission, such as sending data to the server
         console.log(formData);
+        const data = new FormData(e.currentTarget);
+        const username = data.get('username');
+        const password = data.get('password');
+        try {
+          await login({username, password});
+          console.log("Login successful");
+        } catch(error){
+          console.error("Login failed:", error.message);
+        }
       };
   return (
     <div className="container mx-auto max-w-md mt-8">
