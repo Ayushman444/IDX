@@ -60,8 +60,15 @@ export const EditorPage = () => {
 
       socket.on('update_users', (clients) => {
         console.log("clients", clients);
-        setUsers(clients);
-        console.log("users", users);
+    
+        const updatedUsers = clients.map(client => ({
+            socketId: client.socketId,
+            username: client.username,
+            // Add any other properties you need from the client object
+        }));
+    
+        setUsers(updatedUsers);
+        console.log("users", updatedUsers);
       });
 
 
