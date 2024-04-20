@@ -1,24 +1,35 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { Box, Button, Text, useToast } from "@chakra-ui/react";
 import { executeCode } from "./Executer";
 import React from "react";
+import { EditorContext, InputContext } from "../../context/EditorContext";
+import { LanguageIds } from "../../Constants";
 
 export const Output = ({ editorRef, language }) => {
-    const toast = useToast();
+  const toast = useToast();
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const editorContext  = useContext(EditorContext);
+  const inputContext = useContext(InputContext);
 
+  // console.log(editorContext,inputContext);
+  // console.log(editorRef);
   const runCode = async () => {
-    const sourceCode = editorRef.current.getValue();
+    const sourceCode = editorContext;
+    // console.log(sourceCode.current,"this is source code");  
+    // console.log('def greet(name):\n\tprint("Hello, " + name + "!")\na=input("enter number");\ngreet(a);',"i need this");  
+
     if (!sourceCode) return;
     try {
       setIsLoading(true);
-      const { run: result } = await executeCode(language, sourceCode);
-      setOutput(result.output.split("\n"));
-      result.stderr ? setIsError(true) : setIsError(false);
+      const output1 = await executeCode(LanguageIds[language], sourceCode.current
+      , inputContext);
+      
+      setOutput(output1);
+      // result.stderr ? setIsError(true) : setIsError(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast({
         title: "An error occurred.",
         description: error.message || "Unable to run code",
@@ -52,9 +63,7 @@ export const Output = ({ editorRef, language }) => {
         borderRadius={4}
         borderColor={isError ? "red.500" : "#333"}
       >
-        {output
-          ? output.map((line, i) => <Text key={i}>{line}</Text>)
-          : 'Click "Run Code" to see the output here'}
+        {output}
       </Box>
     </Box>
   )
