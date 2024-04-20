@@ -53,8 +53,8 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , set
   };
 
   return (
-    <Box>
-      <HStack spacing={4}>
+    <Box h="100%" w = "100%">
+      <HStack spacing={2}>
         <Box w="50%" >
           <LanguageSelector language={language} onSelect={onSelect} />
           <Editor
@@ -64,6 +64,7 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , set
               },
             }}
             height="75vh"
+            width="45vw"
             theme="vs-dark"
             language={language}
             defaultValue={CODE_SNIPPETS[language]}
