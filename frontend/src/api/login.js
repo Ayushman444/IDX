@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
+
 const {useState} = require("react");
 
 const useLogin = () => {
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 
 	const login = async ({username, password}) => {
 		setLoading(true);
@@ -17,6 +20,8 @@ const useLogin = () => {
                 throw new Error(data.error || "Login failed");
             }
 			localStorage.setItem("username", username);
+
+			navigate('/Home');
 
 		}catch (error) {
             throw new Error(error.message || "Login failed");

@@ -63,6 +63,7 @@ async function executeCode(language, sourceCode, inputContext) {
   });
 
   jsonGetSolution = await getSolution.json();
+  console.log((jsonGetSolution));
   console.log(atob(jsonGetSolution.stdout),"execute");
   return atob(jsonGetSolution.stdout);
 }
