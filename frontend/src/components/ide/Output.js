@@ -5,7 +5,7 @@ import React from "react";
 import { EditorContext, InputContext } from "../../context/EditorContext";
 import { LanguageIds } from "../../Constants";
 
-export const Output = ({ editorRef, language }) => {
+export const Output = ({ editorRef, language , theme }) => {
   const toast = useToast();
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export const Output = ({ editorRef, language }) => {
     if (!sourceCode) return;
     try {
       setIsLoading(true);
-      const output1 = await executeCode(LanguageIds[language], sourceCode
+      const output1 = await executeCode(LanguageIds[language], sourceCode.current
       , inputContext);
       
       setOutput(output1);
@@ -63,6 +63,7 @@ export const Output = ({ editorRef, language }) => {
         border="1px solid"
         borderRadius={4}
         borderColor={isError ? "red.500" : "#333"}
+        bg={theme === "light" ? "white" : ""}
       >
         {output}
       </Box>

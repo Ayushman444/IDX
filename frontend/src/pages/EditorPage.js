@@ -15,6 +15,7 @@ export const EditorPage = () => {
   const languageRef = useRef("");
   const [clients, setClients] = useState([]);
   const { roomId } = useParams();
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     const initializeSocket = async () => {
@@ -75,14 +76,18 @@ export const EditorPage = () => {
   }, [inputContext]);
   // console.log(editorContext,inputContext);
   // console.log(codeRef);
+  const handleThemeToggle = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
     <EditorContext.Provider value={editor}>
       <InputContext.Provider value={input}>
-    <div className="h-[100vh] w-[100vw] flex flex-row justify-center items-center">
+      <div className={`h-[100vh] w-[100vw] flex bg-white flex-row justify-center items-center relative ${theme === "dark" ? "dark-theme" : "light-theme"}`}>
+    <input type="checkbox" className="toggle absolute top-2 right-10" onChange={handleThemeToggle} checked={theme === "light"} />
     <SideBar/>
-    <Box minH="100vh" bg="#0f0a19" color="gray.500" px={6} py={8}>
-      <CodeEditor roomId={roomId} socket={socketRef} onCodeChange={(code) => { codeRef.current = code; }} onLanguageChange={(language) => { languageRef.current = language; }} setInput = {setInput} setEditor = {setEditor}/>
+    <Box minH="100vh" bg={`${theme === "dark" ? "gray.800":"gray.200"}`} color="gray.500" px={6} py={8}>
+      <CodeEditor roomId={roomId} socket={socketRef} onCodeChange={(code) => { codeRef.current = code; }} onLanguageChange={(language) => { languageRef.current = language; }} setInput = {setInput} setEditor = {setEditor} theme={theme}/>
     </Box>
       
     

@@ -10,7 +10,7 @@ import { useRef } from "react";
 // import { CODE_SNIPPETS } from "../../Constants";
 
 
-export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput , setEditor}) => {
+export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput , setEditor , theme}) => {
   const editorRef = useRef("");
   const inputRef = useRef("");
   const [language, setLanguage] = useState("javascript");
@@ -99,12 +99,13 @@ const onChange = (newValue) => {
 };
 
   return (
-    <Box h="100%" w="100%">
+    <Box h="100%" w="100%" >
       <input type="file" onChange={onFileUpload} />
       <HStack spacing={2}>
         <Box w="50%" >
           <LanguageSelector language={language} onSelect={onSelect} />
           <Editor
+            className="border border-gray-500 rounded-sm"
             options={{
               minimap: {
                 enabled: false,
@@ -112,7 +113,7 @@ const onChange = (newValue) => {
             }}
             height="75vh"
             width="45vw"
-            theme="vs-dark"
+            theme={theme === "dark" ? "vs-dark" : "vs"}
             language={language}
             defaultValue={CODE_SNIPPETS[language]}
             onMount={onMount}
@@ -120,10 +121,10 @@ const onChange = (newValue) => {
             onChange={onChange}
           />
         </Box>
-        <Box w="50%">
+        <Box w="50%" >
           <VStack>
             
-            <Output editorRef={editorRef} language={language} inputRef={inputRef} />
+            <Output editorRef={editorRef} language={language} inputRef={inputRef} theme={theme} />
             
             
             <Input inputRef={inputRef} setInput={setInput}/>

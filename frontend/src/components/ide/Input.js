@@ -23,7 +23,7 @@ export const Input = ({ inputRef ,setInput}) => {
   };
 
   return (
-    <Box h="30%" w="100%">
+    <Box h="30%" w="100%" className="border border-gray-500 rounded-sm">
       <Text mb={2} fontSize="lg">
         Input
       </Text>
@@ -33,7 +33,7 @@ export const Input = ({ inputRef ,setInput}) => {
             enabled: false,
           },
         }}
-        height="30vh"
+        height="25vh"
         theme="vs-dark"
         defaultLanguage="plaintext"
         defaultValue=""
