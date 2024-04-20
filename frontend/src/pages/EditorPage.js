@@ -12,8 +12,8 @@ import { HStack } from "@chakra-ui/react";
 export const EditorPage = () => {
   const reactNavigator = useNavigate();
   const socketRef = useRef(null);
-  const codeRef = useRef(null);
-  const languageRef = useRef(null);
+  const codeRef = useRef("");
+  const languageRef = useRef("");
   const [clients, setClients] = useState([]);
   const { roomId } = useParams();
   const location = useLocation();
@@ -61,6 +61,15 @@ export const EditorPage = () => {
       }
     };
   }, [roomId]);
+  const editorContext  = useContext(EditorContext);
+  const inputContext = useContext(InputContext);
+  const [input, setInput] = useState("input value");
+
+  useEffect(() => {
+    setInput(inputContext);
+  }, [inputContext]);
+  // console.log(editorContext,inputContext);
+  // console.log(codeRef);
 
   async function copyRoomId() {
     try {

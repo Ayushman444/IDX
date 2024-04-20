@@ -9,15 +9,16 @@ import { CODE_SNIPPETS } from "../../Constants";
 import { useRef } from "react";
 
 
-export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange }) => {
-  const editorRef = useRef();
-  const inputRef = useRef();
+export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput }) => {
+  const editorRef = useRef("");
+  const inputRef = useRef("");
   const [language, setLanguage] = useState("javascript");
   const [value, setValue] = useState(CODE_SNIPPETS[language]);
 
   useEffect(() => {
     if (socket.current) {
         socket.current.on('code_change', ({ code,language }) => {
+            // console.log(editorRef.current.getValue()); 
             setValue(code);
             setLanguage(language);
         });
@@ -54,7 +55,7 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange }) =>
   return (
     <Box>
       <HStack spacing={4}>
-        <Box w="50%">
+        <Box w="50%" >
           <LanguageSelector language={language} onSelect={onSelect} />
           <Editor
             options={{
@@ -77,7 +78,7 @@ export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange }) =>
             <Output editorRef={editorRef} language={language} inputRef={inputRef} />
             
             
-            <Input inputRef={inputRef} />
+            <Input inputRef={inputRef} setInput={setInput}/>
           </VStack>
         </Box>
         
