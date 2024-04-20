@@ -1,4 +1,5 @@
 export const LANGUAGE_VERSIONS = {
+  JavaScript: "18.15.0",
   Assembly: "NASM 2.14.02",
   Bash: "5.0.0",
   Basic: "FBC 1.07.1",
@@ -25,7 +26,6 @@ export const LANGUAGE_VERSIONS = {
   Groovy: "3.0.3",
   Haskell: "8.8.1",
   Java: "17.0.6",
-  JavaScript: "18.15.0",
   Kotlin: "1.3.70",
   Lua: "5.3.5",
   MultiFileProgram: "",

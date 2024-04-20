@@ -7,6 +7,7 @@ import { Output } from "./Output";
 import { LanguageSelector } from "./LanguageSelector";
 import { CODE_SNIPPETS } from "../../Constants";
 import { useRef } from "react";
+// import { CODE_SNIPPETS } from "../../Constants";
 
 
 export const CodeEditor = ({ roomId, socket, onCodeChange,onLanguageChange , setInput }) => {
