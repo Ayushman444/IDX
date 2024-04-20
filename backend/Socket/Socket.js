@@ -1,5 +1,5 @@
 const { Server } = require('socket.io');
-const http = require('http'); // Import the http module
+const http = require('http');
 
 function getAllConnectedClients(io, roomId, userSocketMap) {
     return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map((socketId) => {
@@ -32,12 +32,12 @@ const socketLogic = () => {
             });
         });
 
-        socket.on('code_change', ({ roomId, code }) => {
-            socket.in(roomId).emit('code_change', { code });
+        socket.on('code_change', ({ roomId, code , language}) => {
+            socket.in(roomId).emit('code_change', { code,language });
         });
 
-        socket.on('sync_code', ({ socketId, code }) => {
-            io.to(socketId).emit('code_change', { code });
+        socket.on('sync_code', ({ code,language,socketId }) => {
+            io.to(socketId).emit('code_change', { code,language });
         });
 
         socket.on('disconnecting', () => {
@@ -49,6 +49,7 @@ const socketLogic = () => {
                 });
             });
             delete userSocketMap[socket.id];
+            console.log('socket disconnected', socket.id);
             socket.leave();
         });
     });
