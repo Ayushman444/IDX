@@ -126,8 +126,6 @@ const onChange = (newValue) => {
           <VStack>
             
             <Output editorRef={editorRef} language={language} inputRef={inputRef} theme={theme} />
-            
-            
             <Input inputRef={inputRef} setInput={setInput}/>
           </VStack>
         </Box>
