@@ -54,6 +54,11 @@ const socketLogic = () => {
         });
     });
 
+    const updateConnectedUsers = (io, roomId, userSocketMap) => {
+        const clients = getAllConnectedClients(io, roomId, userSocketMap);
+        io.to(roomId).emit('update_users', clients);
+    };
+
     // Return the server instance
     return server;
 };

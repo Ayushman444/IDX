@@ -4,9 +4,11 @@ import { v4 as uuidV4 } from 'uuid';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import "../App.css"
+import useLogout from '../api/logout';
 
 export const Home = () => {
     const navigate = useNavigate();
+    const {logout} = useLogout();
 
     const [roomId, setRoomId] = useState('');
     const [username, setUsername] = useState('');
@@ -31,6 +33,14 @@ export const Home = () => {
         });
     };
 
+    const handlelogout = async(e) => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error("Logout failed", error.message);
+        }
+    }
+
     const handleInputEnter = (e) => {
         if (e.code === 'Enter') {
             joinRoom();
@@ -38,12 +48,18 @@ export const Home = () => {
     };
   return (
     <div className="homePageWrapper">
+            <div className='text-grey' >
+                <button onClick={handlelogout} className='bg-blue-400'>
+                    Logout
+                </button>
+            </div>
             <div className="formWrapper">
-                <img
+                {/* <img
                     className="homePageLogo"
                     src="/code-sync.png"
                     alt="code-sync-logo"
-                />
+                /> */}
+                <div className='text-5xl'>IDx</div>
                 <h4 className="mainLabel">Paste invitation ROOM ID</h4>
                 <div className="inputGroup">
                     <input
@@ -77,12 +93,6 @@ export const Home = () => {
                     </span>
                 </div>
             </div>
-            <footer>
-                <h4>
-                    Built with 💛 &nbsp; by &nbsp;
-                    <a href="https://github.com/codersgyan">Coder's Gyan</a>
-                </h4>
-            </footer>
         </div>
   )
 }
