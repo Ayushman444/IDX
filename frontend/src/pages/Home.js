@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import "../App.css"
 import useLogout from '../api/logout';
+import './Home.css'
 
 export const Home = () => {
     const navigate = useNavigate();
@@ -46,12 +47,16 @@ export const Home = () => {
             joinRoom();
         }
     };
+
+    
   return (
-    <div className="homePageWrapper">
-            <div className='text-grey' >
-                <button onClick={handlelogout} className='bg-blue-400'>
-                    Logout
-                </button>
+    <div className="homePageWrapper relative">
+            <div className='absolute text-xl font-bold top-3 right-[44%]'>
+                <h1>Hello Dummy User</h1>
+            </div>
+            <div className='absolute top-1 right-10' >
+                
+                <button onClick={handlelogout} className="btn btn-outline btn-accent border border-rounded border-white rounded-lg">Logout</button>
             </div>
             <div className="formWrapper">
                 {/* <img
