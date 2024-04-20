@@ -9,7 +9,7 @@ export const JoinedUser = ({ username, access }) => {
   };
 
   return (
-    <div className={`joined-user ${access ? 'access-granted' : 'access-denied'}`}>
+    <div className={`joined-user ${access ? 'bg-green-400' : 'bg-red-300'}`}>
       <div>{username}</div>
       <div className="icons">
         {access ? (
