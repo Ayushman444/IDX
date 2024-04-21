@@ -19,7 +19,8 @@ Real-time cursor tracking feature This feature provides a visual representation 
   4) MongoDB
   5) SocketIO
   6) Tailwind
-  7) Judge_0 API
+  7) Chakra UI
+  8) Judge_0 API
   
 
 ## Contributors:
